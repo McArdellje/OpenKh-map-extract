@@ -94,3 +94,6 @@ Wrap Mode can be one of the following:
     Repeat will repeat the texture
     Clamp will clamp the texture
     Region* will not do anything different from the other two modes unless you are using non-sliced textures, but I have not documented the output format for that
+
+There is also a new folder named `ImporterScripts` which contains a python script used to import the exported map models and textures into blender (only works with pre-sliced)
+as well as a unity script and 3 shaders to be used for importing the map models and textures into unity, this works with both pre-sliced and non-sliced textures but it is still recommended to use pre-sliced textures
