@@ -69,3 +69,28 @@ The entire content of the repository is protected by the Apache 2.0 license. Som
 * You **must** include the same NOTICE file in every distribution, if included within the original repository.
 * You **must** include the license and copyright notice with each and every distribution and fork.
 * Any modifications of this code base **ABSOLUTELY MUST** be distributed with the same license, Apache 2.0.
+
+### Modifications
+OpenKh.Tools.MapStudio/App.cs has been modified to be able to extract map models, textures, rendering information and collision data from KH2 map files
+If you run MapStudio then you can use `File>Export>World Meshes (Sliced Textures)` and `File>Export>Map Collision (Combined)` to export the map models and collision data respectively
+it is not recommended to use the non-slided textures option because it will export the raw textures instead of ones already cropped to the correct size for rendering, and will use another output format which I have not documented
+when exporting the map models it will also export the textures and a text file with details about how to render the map models
+this text file uses this format:
+\[mesh group index\],\[mesh index\]:\[texture name\]:\[alpha flags\]:\[priority\]:\[draw priority\]:\[U wrap mode\],\[V wrap mode\]
+mesh group index and mesh index are used to find the mesh in the map model file
+texture name is the name of the texture file (without the extension) for the mesh
+alpha flags is an integer bitfield that is used to determine how the texture is rendered
+priority and draw priority are somehow related to render order but I'm not sure exactly how because I haven't been able to find any documentation on them
+U wrap mode and V wrap mode are used to determine how the texture is wrapped
+
+alpha flags has the format: \[Opaque\],\[Transparent\],\[Additive\],\[Subtractive\]
+if Opaque is 1 then no other flags will be set and the texture will be rendered opaquely
+if only Transparent is set then the texture should be rendered with alpha blending
+if Transparent and Additive are set then the texture should be rendered with additive blending
+if Transparent and Subtractive are set then the texture should be rendered with subtractive blending
+
+Wrap Mode can be one of the following:
+    Repeat, Clamp, RegionClamp, RegionRepeat
+    Repeat will repeat the texture
+    Clamp will clamp the texture
+    Region* will not do anything different from the other two modes unless you are using non-sliced textures, but I have not documented the output format for that
